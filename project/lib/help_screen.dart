@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, required this.onWelcomeScreen});
+class HelpScreen extends StatelessWidget {
+  const HelpScreen({super.key, required this.onWelcomeScreen});
 
   final void Function() onWelcomeScreen;
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  void backWelcomeScreen(){
-    widget.onWelcomeScreen();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +11,12 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Login Screen"),
+          const Text("Help Screen"),
           const SizedBox(
             height: 16,
           ),
           ElevatedButton(
-            onPressed: backWelcomeScreen,
+            onPressed: onWelcomeScreen,
             child: const Text("Back"),
           )
         ],

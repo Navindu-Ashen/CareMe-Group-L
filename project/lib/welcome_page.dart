@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
+  const WelcomePage({super.key, required this.onLoginScreen, required this.onHelpScreen});
+
+  final void Function() onLoginScreen;
+  final void Function() onHelpScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,9 @@ class WelcomePage extends StatelessWidget {
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 66, 89, 120),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10)),
-                onPressed: () {},
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10)),
+                onPressed: onLoginScreen,
                 child: const Text(
                   "Login",
                   style: TextStyle(
@@ -50,7 +54,7 @@ class WelcomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: onLoginScreen,
                   icon: const Icon(
                     Icons.account_circle_outlined,
                     size: 40,
@@ -62,7 +66,7 @@ class WelcomePage extends StatelessWidget {
                           fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: onHelpScreen,
                   icon: const Icon(
                     Icons.help_outline,
                     size: 40,
