@@ -19,11 +19,12 @@ class _BackgroundState extends State<Background> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
+                Color.fromARGB(255, 208, 215, 250),
                 Color.fromARGB(255, 249, 250, 255),
-                Color.fromARGB(255, 206, 214, 255),
+                Color.fromARGB(255, 249, 250, 255),
               ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
           child: currentScreen,
