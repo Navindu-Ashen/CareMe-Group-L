@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/welcome_page.dart';
 
-
 class Background extends StatefulWidget {
   const Background({super.key});
 
@@ -10,8 +9,6 @@ class Background extends StatefulWidget {
 }
 
 class _BackgroundState extends State<Background> {
-
-
   @override
   Widget build(BuildContext context) {
     Widget currentScreen = const WelcomePage();
@@ -23,7 +20,7 @@ class _BackgroundState extends State<Background> {
             gradient: LinearGradient(
               colors: [
                 Color.fromARGB(255, 249, 250, 255),
-                Color.fromARGB(255, 249, 250, 255),
+                Color.fromARGB(255, 206, 214, 255),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
