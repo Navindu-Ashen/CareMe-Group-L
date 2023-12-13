@@ -49,27 +49,30 @@ class _BackgroundState extends State<Background> {
         onWelcomeScreen: swichScreenWelcome,
       );
     } else if (activeScreen == "welcome-screen") {
-      currentScreen = WelcomePage(onLoginScreen: swichScreenLogin, onHelpScreen: swichScreenHelp,);
+      currentScreen = WelcomePage(
+        onLoginScreen: swichScreenLogin,
+        onHelpScreen: swichScreenHelp,
+      );
     } else if (activeScreen == "help-screen") {
-      currentScreen = HelpScreen(onWelcomeScreen: swichScreenWelcome,);
+      currentScreen = HelpScreen(
+        onWelcomeScreen: swichScreenWelcome,
+      );
     }
 
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 183, 188, 243),
-                Color.fromARGB(255, 249, 250, 255),
-                Color.fromARGB(255, 249, 250, 255),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 183, 188, 243),
+              Color.fromARGB(255, 249, 250, 255),
+              Color.fromARGB(255, 249, 250, 255),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          child: currentScreen,
         ),
+        child: currentScreen,
       ),
     );
   }
