@@ -20,7 +20,7 @@ class WelcomePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 30),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color.fromARGB(255, 108, 145, 196),
+              color: const Color.fromARGB(255, 107, 145, 196),
             ),
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
