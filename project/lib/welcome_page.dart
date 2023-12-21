@@ -42,7 +42,7 @@ class WelcomePage extends StatelessWidget {
           ),
           Image.asset(
             "assets/images/home-image.jpg",
-            width: double.infinity,
+            width: 300,
           ),
           const SizedBox(
             height: 5,

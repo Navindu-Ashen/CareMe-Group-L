@@ -60,6 +60,7 @@ class _BackgroundState extends State<Background> {
     }
 
     return Scaffold(
+      appBar: AppBar(title: const Text("Care Me"),),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
