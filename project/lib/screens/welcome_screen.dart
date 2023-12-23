@@ -9,6 +9,15 @@ class WelcomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("CareMe"),
       ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Welcome Screen"),
+            ElevatedButton(onPressed: (){}, child: const Text("Continue"))
+          ],
+        ),
+      ),
     );
   }
 }
