@@ -7,7 +7,7 @@ class HelpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CareMe Login"),
+        title: const Text("CareMe Help"),
       ),
       body: Center(
         child: Column(
