@@ -8,7 +8,7 @@ class WelcomeScreen extends StatelessWidget {
   void _changeScreenLogin(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => const LoginScreen(),
       ),
     );
   }
@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
   void _changeScreenHelp(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => HelpScreen(),
+        builder: (context) => const HelpScreen(),
       ),
     );
   }
@@ -26,111 +26,126 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("CareMe"),
+        backgroundColor: const Color.fromARGB(255, 189, 224, 252),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              "assets/images/logoTN.png",
-              width: 250,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 189, 224, 252),
+                Color.fromARGB(255, 249, 250, 255),
+                Color.fromARGB(255, 255, 255, 255),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 30),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: const Color.fromARGB(255, 107, 145, 196),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(
+                height: 5,
               ),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
+              Image.asset(
+                "assets/images/logoTN2.png",
+                width: 200,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 70, vertical: 30),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: const Color.fromARGB(255, 107, 145, 196),
+                ),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 66, 89, 120),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10)),
-                  onPressed: () {
-                    _changeScreenLogin(context);
-                  },
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
+                          horizontal: 40, vertical: 10),
                     ),
-                  )),
-            ),
-            const SizedBox(
-              height: 80,
-            ),
-            Image.asset(
-              "assets/images/home-image.jpg",
-              width: 300,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Container(
-              color: const Color.fromARGB(255, 66, 89, 120),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton.icon(
                     onPressed: () {
                       _changeScreenLogin(context);
                     },
-                    icon: const Icon(
-                      Icons.account_circle_outlined,
-                      size: 40,
-                    ),
-                    label: const Text("Login"),
-                    style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        textStyle: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      _changeScreenHelp(context);
-                    },
-                    icon: const Icon(
-                      Icons.help_outline,
-                      size: 40,
-                    ),
-                    label: const Text("Help"),
-                    style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        textStyle: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                  ),
-                ],
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                      ),
+                    )),
               ),
-            ),
-            // Text(
-            //   "Welcome Screen",
-            //   style: TextStyle(
-            //     fontSize: 24,
-            //     color: Theme.of(context).colorScheme.secondary,
-            //   ),
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     _changeScreenLogin(context);
-            //   },
-            //   child: const Text("Login"),
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     _changeScreenHelp(context);
-            //   },
-            //   child: const Text("Help"),
-            // ),
-          ],
+              const SizedBox(
+                height: 80,
+              ),
+              Image.asset(
+                "assets/images/home-image.jpg",
+                width: double.infinity,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                color: const Color.fromARGB(255, 107, 145, 196),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        _changeScreenLogin(context);
+                      },
+                      splashColor: Colors.white60,
+                      child: const Column(
+                        children: [
+                          Icon(
+                            Icons.account_circle_outlined,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Login",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        _changeScreenHelp(context);
+                      },
+                      splashColor: Colors.white60,
+                      child: const Column(
+                        children: [
+                          Icon(
+                            Icons.help_outline,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Help",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
