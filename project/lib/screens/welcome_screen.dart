@@ -25,8 +25,8 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CareMe"),
-        backgroundColor: const Color.fromARGB(255, 189, 224, 252),
+        title: Text("CareMe", style: Theme.of(context).textTheme.titleLarge,),
+        backgroundColor: Color.fromARGB(255, 107, 145, 196),
       ),
       body: Center(
         child: Container(
