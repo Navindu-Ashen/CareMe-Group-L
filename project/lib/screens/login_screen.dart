@@ -51,19 +51,18 @@ class LoginScreen extends StatelessWidget {
                     left: 50,
                     right: 50,
                     child: InkWell(
-                      
                       onTap: () {},
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 70, vertical: 30),
+                            horizontal: 70, vertical: 180),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: const Color.fromARGB(255, 107, 145, 196),
                           boxShadow: [
                             BoxShadow(
-                              blurRadius: 10,
+                              blurRadius: 20,
                               offset: Offset(15, 15),
-                              color: const Color.fromARGB(255, 192, 192, 192),
+                              color: Color.fromARGB(155, 0, 0, 0),
                             ),
                             BoxShadow(
                               blurRadius: 10,
@@ -72,25 +71,22 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 66, 89, 120),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 0,
-                                vertical: 20,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            TextField(
+                              decoration: InputDecoration(
+                                label: Text("User Name"),
                               ),
-                              shadowColor: Colors.white,
                             ),
-                            onPressed: () {},
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 40,
+                            TextField(
+                              decoration: InputDecoration(
+                                label: Text("Password"),
                               ),
-                            )),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
