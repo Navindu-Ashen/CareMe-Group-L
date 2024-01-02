@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Great Places',
+      title: 'CareMe',
       theme: theme,
       home: const WelcomeScreen(),
     );
