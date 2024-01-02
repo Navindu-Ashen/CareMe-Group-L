@@ -34,7 +34,6 @@ import 'package:project/screens/welcome_screen.dart';
 //   }
 // }
 
-
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.light,
   seedColor: const Color.fromARGB(255, 66, 89, 120),
@@ -60,7 +59,7 @@ final theme = ThemeData().copyWith(
 
 void main() {
   runApp(
-      MyApp(),
+    MyApp(),
   );
 }
 
@@ -70,6 +69,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Great Places',
       theme: theme,
       home: const WelcomeScreen(),
