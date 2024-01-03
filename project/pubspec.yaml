@@ -74,6 +74,7 @@ flutter:
     - assets/images/help-icon.png
     - assets/images/logoTN2.png
     - assets/images/icon.png
+    - assets/images/suwasariya_full.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
