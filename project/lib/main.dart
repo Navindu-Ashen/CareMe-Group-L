@@ -53,7 +53,7 @@ final theme = ThemeData().copyWith(
       fontWeight: FontWeight.bold,
     ),
     titleLarge: GoogleFonts.ubuntuCondensed(
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.normal,
     ),
   ),
 );
