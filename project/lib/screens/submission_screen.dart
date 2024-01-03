@@ -9,6 +9,7 @@ class SubmissionScreen extends StatefulWidget {
 }
 
 class _SubmissionScreenState extends State<SubmissionScreen> {
+
   void _changeScreenResults(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -29,22 +30,18 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
           const SizedBox(height: 0,),
           Column(
             children: [
-              Text(
-                "Submission Screen",
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Theme.of(context).colorScheme.secondary,
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: const Color.fromARGB(255, 91, 161, 218),),
+                  height: 200,
+                  child: Column(children: [
+                    TextField(),
+                  ],),
+                  
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _changeScreenResults(context);
-                },
-                child: const Text("Submit"),
-              ),
+              )
             ],
           ),
           Container(
