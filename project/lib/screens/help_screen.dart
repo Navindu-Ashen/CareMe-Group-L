@@ -16,12 +16,12 @@ class HelpScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Image.asset(
-                'assets2/logoTN.png',
+                'assets/logoTN.png',
                 fit: BoxFit.cover,
                 height: 150,
               ),
               Image.asset(
-                'assets2/suwasariya_full.jpg',
+                'assets/suwasariya_full.jpg',
                 fit: BoxFit.cover,
                 height: 90,
               ),
@@ -53,7 +53,7 @@ class HelpScreen extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Image.asset(
-                    'assets2/background_image.jpg',
+                    'assets/home-image.jpg',
                     width: 400,
                     height: 300,
                   ),
