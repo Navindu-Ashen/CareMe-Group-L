@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/screens/ambulance_list_screen.dart';
 import 'package:project/screens/patient_list_screen.dart';
@@ -96,26 +97,55 @@ class MainDrawer extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
-                Text(
-                  "Copyright",
-                  style: TextStyle(fontSize: 18),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Card(
+                    child: ListTile(
+                      onTap: () {
+                        FirebaseAuth.instance.signOut();
+                      },
+                      leading: Icon(
+                        Icons.logout,
+                        size: 30,
+                        color: Color.fromARGB(255, 66, 89, 120),
+                      ),
+                      title: Text(
+                        "Logout",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Color.fromARGB(255, 66, 89, 120),
+                              fontSize: 24,
+                            ),
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(
-                  width: 5,
+                  height: 12,
                 ),
-                Icon(
-                  Icons.copyright,
-                  size: 22,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "2024, CareMe",
-                  style: TextStyle(fontSize: 18),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Copyright",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Icon(
+                      Icons.copyright,
+                      size: 22,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "2024, CareMe",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
                 ),
               ],
             ),

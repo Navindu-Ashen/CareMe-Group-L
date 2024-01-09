@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/screens/home_screen.dart';
 import 'package:project/screens/login_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -26,15 +27,25 @@ void main() async {
   runApp(MyApp());
 }
 
+DateTime timeBackPressed = DateTime.now();
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       title: 'CareMe',
       theme: theme,
-      home: LoginScreen(),
+      home:StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, snapshot) {
+            if (snapshot.hasData) {
+              return  HomeScreen();
+            }
+            return  LoginScreen();
+          },
+        ),
     );
   }
 }
