@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
       //error msg
       return;
     }
-
+    FocusScope.of(context).unfocus();
     _form.currentState!.save();
 
     try {
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(error.message ?? "Signup fauld"),
+          content: Text(error.message ?? "Signup faild"),
         ),
       );
       setState(() {
@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -145,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                         const SizedBox(height: 10),
+                        
 
                         // forgot password?
                         Row(
