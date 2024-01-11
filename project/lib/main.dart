@@ -9,7 +9,7 @@ import 'firebase_options.dart';
 
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.light,
-  seedColor: const Color.fromARGB(255, 66, 89, 120),
+  seedColor: const Color.fromARGB(255, 107, 145, 196),
 );
 
 final theme = ThemeData().copyWith(

@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:project/screens/help_screen.dart';
 import 'package:project/screens/results_screen.dart';
+import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
+
+const uuid = Uuid();
 
 class SubmissionScreen extends StatefulWidget {
   const SubmissionScreen({super.key});
@@ -10,13 +17,80 @@ class SubmissionScreen extends StatefulWidget {
 
 class _SubmissionScreenState extends State<SubmissionScreen> {
   final _form = GlobalKey<FormState>();
-  String dropdownValue = 'Male';
+  String dropdownValueGender = "Male";
+  String dropdownValueState = 'Normal';
+  var _isSending = false;
+  var _pName = "";
+  var _pAge = "";
+  var _pDescription = "";
+  var _travelTime = "";
+
+  void _changeScreenHelp() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => HelpScreen(),
+      ),
+    );
+  }
+
+  void _saveItem() async {
+    var _rollNumber = uuid.v4();
+
+    if (_form.currentState!.validate()) {
+
+      FocusScope.of(context).unfocus();
+      _form.currentState!.save();
+
+      setState(() {
+        _isSending = true;
+      });
+
+      final url = Uri.https(
+        "careme-test1-default-rtdb.firebaseio.com",
+        "ambulance-request.json",
+      );
+
+      final responce = await http.post(
+        url,
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: json.encode(
+          {
+            "patientId": _rollNumber,
+            "patientName": _pName,
+            "patientAge": _pAge,
+            "patientGender": dropdownValueGender,
+            "patientState": dropdownValueState,
+            "patientDescription": _pDescription,
+            "travelTime": _travelTime,
+            "ambulanceNo": "ABC-12348",
+            "pickupLocation": "Kandy",
+          },
+        ),
+      );
+      print(responce.statusCode);
+      final Map<String, dynamic> resData = json.decode(responce.body);
+
+      if (!context.mounted) {
+        return;
+      }
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (ctx) => ResultsScreen(),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: AppBar(
         title: const Text("Enter Patient Information"),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -39,29 +113,37 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                       children: [
                         TextFormField(
                           style: TextStyle(fontSize: 18),
-                          keyboardType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
+                          textCapitalization: TextCapitalization.sentences,
                           autocorrect: false,
                           decoration: InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,
-                              hintText: "Name",
-                              hintStyle: TextStyle(color: Colors.grey[500])),
+                            label: Text(
+                              "Name:",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: const Color.fromARGB(155, 0, 0, 0),
+                                  ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
+                            filled: true,
+                          ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return "Please enter patient name.";
                             }
                             return null;
                           },
-                          onSaved: (value) {},
+                          onSaved: (value) {
+                            _pName = value!;
+                          },
                         ),
                         const SizedBox(
                           height: 12,
@@ -69,34 +151,50 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         TextFormField(
                           style: TextStyle(fontSize: 18),
                           keyboardType: TextInputType.number,
-                          obscureText: true,
                           decoration: InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,
-                              hintText: "Age",
-                              hintStyle: TextStyle(color: Colors.grey[500])),
+                            label: Text(
+                              "Age:",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: const Color.fromARGB(155, 0, 0, 0),
+                                  ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
+                            filled: true,
+                          ),
                           validator: (value) {
-                            if (value == null ||
-                                int.parse(value) != num ||
-                                int.parse(value) < 120) {
-                              return "Enter a valid age";
+                            if (value == null || value.trim().isEmpty) {
+                              return "Enter a valid age.";
                             }
                             return null;
                           },
-                          onSaved: (value) {},
+                          onSaved: (value) {
+                            _pAge = value!;
+                          },
                         ),
-                        const SizedBox(height: 10),
-
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DropdownButtonFormField(
                           decoration: InputDecoration(
+                              label: Text(
+                                "Gender:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                      color: const Color.fromARGB(155, 0, 0, 0),
+                                    ),
+                              ),
                               enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white),
                               ),
@@ -106,14 +204,17 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                         Theme.of(context).colorScheme.primary),
                               ),
                               fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,
-                              hintText: "Age",
-                              hintStyle: TextStyle(color: Colors.grey[500])),
-                          dropdownColor: Color.fromARGB(255, 240, 247, 255),
-                          value: dropdownValue,
+                              filled: true,),
+                          dropdownColor: Color.fromARGB(255, 203, 227, 254),
+                          // value: dropdownValueGender,
+                          validator: (value) {
+                            if (value == null) {
+                              return "Please select a gender.";
+                            }
+                          },
                           onChanged: (String? newValue) {
                             setState(() {
-                              dropdownValue = newValue!;
+                              dropdownValueGender = newValue!;
                             });
                           },
                           items: <String>['Male', 'Female']
@@ -127,118 +228,122 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             );
                           }).toList(),
                         ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            label: Text(
+                              "Patient State:",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: const Color.fromARGB(155, 0, 0, 0),
+                                  ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
+                            filled: true,
+                          ),
+                          dropdownColor: Color.fromARGB(255, 203, 227, 254),
+                          validator: (value) {
+                            if (value == null) {
+                              return "Please select a state.";
+                            }
+                          },
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValueState = newValue!;
+                            });
+                          },
+                          items: <String>['Normal', 'Medium', 'Critical']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                    fontSize: 18, color: const Color.fromARGB(255, 0, 0, 0)),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+
                         TextFormField(
                           style: TextStyle(fontSize: 18),
-                          keyboardType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
-                          autocorrect: false,
+                          textCapitalization: TextCapitalization.sentences,
+                          autocorrect: true,
                           decoration: InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,
-                              hintText: "Gender",
-                              hintStyle: TextStyle(color: Colors.grey[500])),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Please enter patient name.";
-                            }
-                            return null;
+                            label: Text(
+                              "Description  (Optional):",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: const Color.fromARGB(155, 0, 0, 0),
+                                  ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
+                            filled: true,
+                          ),
+                          onSaved: (value) {
+                            _pDescription = value!;
                           },
-                          onSaved: (value) {},
                         ),
                         const SizedBox(
                           height: 12,
                         ),
                         TextFormField(
                           style: TextStyle(fontSize: 18),
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.number,
                           textCapitalization: TextCapitalization.none,
                           autocorrect: false,
                           decoration: InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,
-                              hintText: "Patient State",
-                              hintStyle: TextStyle(color: Colors.grey[500])),
+                            label: Text(
+                              "Travel Time  (Min):",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: const Color.fromARGB(155, 0, 0, 0),
+                                  ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
+                            filled: true,
+                          ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return "Please enter patient name.";
+                              return "Please enter a valid time in minutes";
                             }
                             return null;
                           },
-                          onSaved: (value) {},
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        TextFormField(
-                          style: TextStyle(fontSize: 18),
-                          keyboardType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
-                          autocorrect: false,
-                          decoration: InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,
-                              hintText: "Description",
-                              hintStyle: TextStyle(color: Colors.grey[500])),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Please enter patient name.";
-                            }
-                            return null;
+                          onSaved: (value) {
+                            _travelTime = value!;
                           },
-                          onSaved: (value) {},
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        TextFormField(
-                          style: TextStyle(fontSize: 18),
-                          keyboardType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
-                          autocorrect: false,
-                          decoration: InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,
-                              hintText: "Travel Time",
-                              hintStyle: TextStyle(color: Colors.grey[500])),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Please enter patient name.";
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {},
                         ),
                         const SizedBox(
                           height: 12,
@@ -250,27 +355,45 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                 ),
               ),
               const SizedBox(height: 25),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.all(22),
-                  margin: const EdgeInsets.symmetric(horizontal: 25),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Submit Patient Details",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+              if (!_isSending)
+                GestureDetector(
+                  onTap: _saveItem,
+                  child: Container(
+                    padding: const EdgeInsets.all(22),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Submit Patient Details",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              if (_isSending)
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(22),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -281,7 +404,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                   ),
                   const SizedBox(width: 4),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: _changeScreenHelp,
                     child: Text(
                       'Help',
                       style: TextStyle(

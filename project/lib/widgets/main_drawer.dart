@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/screens/ambulance_list_screen.dart';
 import 'package:project/screens/patient_list_screen.dart';
+import 'package:project/screens/profile_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key});
@@ -9,7 +10,7 @@ class MainDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Color.fromARGB(255, 231, 231, 231),
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -18,19 +19,12 @@ class MainDrawer extends StatelessWidget {
               DrawerHeader(
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 107, 145, 196),
-                      Color.fromARGB(255, 107, 145, 196).withOpacity(0.1),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Theme.of(context).colorScheme.primaryContainer,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Image.asset("assets/images/logoTN2.png",
-                      width: double.infinity, alignment: Alignment.centerLeft),
+                      width: double.infinity, alignment: Alignment.center),
                 ),
               ),
               Column(
@@ -40,51 +34,23 @@ class MainDrawer extends StatelessWidget {
                     child: Card(
                       child: ListTile(
                         leading: Icon(
-                          Icons.accessible_outlined,
+                          Icons.account_circle,
                           size: 30,
                           color: Color.fromARGB(255, 66, 89, 120),
                         ),
                         title: Text(
-                          "Patient List",
+                          "Profile",
                           style:
                               Theme.of(context).textTheme.titleLarge!.copyWith(
                                     color: Color.fromARGB(255, 66, 89, 120),
-                                    fontSize: 24,
+                                    fontSize: 20,
                                   ),
                         ),
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => PatientList(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Card(
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.medical_services_rounded,
-                          size: 30,
-                          color: Color.fromARGB(255, 66, 89, 120),
-                        ),
-                        title: Text(
-                          "Ambulance List",
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: Color.fromARGB(255, 66, 89, 120),
-                                    fontSize: 24,
-                                  ),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => AmbulanceListScreen(),
+                              builder: (ctx) => ProfileScreen(),
                             ),
                           );
                         },
@@ -102,20 +68,22 @@ class MainDrawer extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: Card(
+                    margin: EdgeInsets.symmetric(horizontal: 60),
                     child: ListTile(
                       onTap: () {
                         FirebaseAuth.instance.signOut();
                       },
                       leading: Icon(
                         Icons.logout,
-                        size: 30,
-                        color: Color.fromARGB(255, 66, 89, 120),
+                        size: 26,
+                        color: Color.fromARGB(255, 255, 66, 66),
                       ),
                       title: Text(
-                        "Logout",
+                        "LOGOUT",
                         style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                              color: Color.fromARGB(255, 66, 89, 120),
-                              fontSize: 24,
+                              color: Color.fromARGB(255, 255, 66, 66),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                       ),
                     ),
@@ -129,21 +97,21 @@ class MainDrawer extends StatelessWidget {
                   children: [
                     Text(
                       "Copyright",
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     Icon(
                       Icons.copyright,
-                      size: 22,
+                      size: 14,
                     ),
                     const SizedBox(
                       width: 5,
                     ),
                     Text(
                       "2024, CareMe",
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: 14),
                     ),
                   ],
                 ),

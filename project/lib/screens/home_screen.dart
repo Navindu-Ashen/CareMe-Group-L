@@ -30,69 +30,34 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: const Text("CareMe"),
       ),
       drawer: MainDrawer(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(
-            height: 0,
-          ),
-          Column(
-            children: [
-              Text(
-                "Home Screen",
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Home Screen",
+              style: TextStyle(
+                fontSize: 24,
+                color: Theme.of(context).colorScheme.secondary,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _changeScreenSubmission(context);
-                },
-                child: const Text("New Patient"),
-              ),
-            ],
-          ),
-          Container(
-            color: const Color.fromARGB(255, 107, 145, 196),
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _changeScreenProfile(context);
-                  },
-                  splashColor: Colors.white60,
-                  child: const Column(
-                    children: [
-                      Icon(
-                        Icons.account_circle_outlined,
-                        size: 40,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      Text(
-                        "Profile",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _changeScreenSubmission(context);
+              },
+              child: const Text("New Patient"),
+            ),
+          ],
+        ),
       ),
     );
   }
