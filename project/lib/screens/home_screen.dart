@@ -30,34 +30,102 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: const Text("CareMe"),
       ),
       drawer: MainDrawer(),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Home Screen",
-              style: TextStyle(
-                fontSize: 24,
-                color: Theme.of(context).colorScheme.secondary,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/logoTN2.png',
+                width: 200,
+                height: 200,
               ),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.local_taxi,
+                      size: 24,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Driver_Number Ambulance',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 40),
+              Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.orange,
+                ),
+                child: Center(
+                  child: Text(
+                    'New Patient',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              SizedBox(height: 5),
+              
+              Container(
+                color: const Color.fromARGB(255, 107, 145, 196),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        _changeScreenProfile(context);
+                      },
+                      splashColor: Colors.white60,
+                      child: const Column(
+                        children: [
+                          Icon(
+                            Icons.account_circle_outlined,
+                            size: 40,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          ),
+                          Text(
+                            "Profile",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ]
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _changeScreenSubmission(context);
-              },
-              child: const Text("New Patient"),
-            ),
-          ],
-        ),
       ),
     );
   }
