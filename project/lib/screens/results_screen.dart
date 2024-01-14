@@ -14,7 +14,9 @@ class _ResultsScreenState extends State<ResultsScreen> {
       appBar: AppBar(
         title: const Text("CareMe"),
       ),
- body: Center(
+
+
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,7 +30,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blueAccent[200],
+                color: Colors.blueGrey[200],
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Column(
@@ -51,8 +53,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
             ),
             SizedBox(height: 20),
             Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.blueGrey,
+              ),
               padding: EdgeInsets.all(20),
-              color: Colors.lightBlueAccent[200],
               child: Column(
                 children: [
                   Text('Estimated Travel Time'),
@@ -61,16 +66,22 @@ class _ResultsScreenState extends State<ResultsScreen> {
                     padding: EdgeInsets.all(10),
                     child: Text('10 min'),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(
+              height: 20,
+              width: 30,
+            ),
             Container(
               padding: EdgeInsets.all(20),
-              color: Colors.lightBlueAccent[400],
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.blueGrey[400],
+              ),
               child: Column(
                 children: [
                   Row(
@@ -84,18 +95,17 @@ class _ResultsScreenState extends State<ResultsScreen> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  
                   Text('Hospital Location'),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            Spacer(),
             Container(
               height: 50,
               color: Colors.blue,
               child: Center(
                 child: Text(
-                  'Login',
+                  'login',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -107,9 +117,8 @@ class _ResultsScreenState extends State<ResultsScreen> {
           ],
         ),
       ),
+
     );
   }
-
-    
   }
 
