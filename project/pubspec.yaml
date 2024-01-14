@@ -41,6 +41,8 @@ dependencies:
   firebase_auth: ^4.16.0
   fluttertoast: ^8.2.4
   uuid: ^4.2.2
+  google_maps_flutter: ^2.5.3
+  location: ^5.0.3
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +83,7 @@ flutter:
     - assets/images/suwasariya_full.jpg
     - assets/images/logo3D.png
     - assets/images/CareMeText3DT.png
+    - assets/images/Gmap_logo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

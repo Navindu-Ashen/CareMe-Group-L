@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class AmbulanceListScreen extends StatelessWidget {
-  const AmbulanceListScreen({super.key});
+class HospitalListScreen extends StatelessWidget {
+  const HospitalListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ambulance List"),
+        title: Text("Hospital List"),
       ),
       body: Center(
         child: Text(
-          "Ambulance List",
+          "Hospital List",
           style: TextStyle(
             fontSize: 24,
             color: Theme.of(context).colorScheme.secondary,

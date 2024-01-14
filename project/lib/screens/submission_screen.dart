@@ -5,6 +5,7 @@ import 'package:project/screens/help_screen.dart';
 import 'package:project/screens/results_screen.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 
 const uuid = Uuid();
 
@@ -23,7 +24,15 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   var _pName = "";
   var _pAge = "";
   var _pDescription = "";
-  var _travelTime = "";
+  // var _travelTime = "";
+  var _pickedLocation = "";
+  var _isGettingLocation = false;
+  double latitudeFinal = 0;
+  double longitudeFinal = 0;
+
+  String get locationImage {
+    return "https://maps.googleapis.com/maps/api/staticmap?center=$latitudeFinal, $longitudeFinal&zoom=17&size=600x300&maptype=roadmap&markers=color:red%7Clabel:P%7C$latitudeFinal,$longitudeFinal&key=AIzaSyAcKZHMOpRIqKUPAAP1U-n8Vp6nEtg7pcs";
+  }
 
   void _changeScreenHelp() {
     Navigator.of(context).push(
@@ -37,7 +46,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
     var _rollNumber = uuid.v4();
 
     if (_form.currentState!.validate()) {
-
       FocusScope.of(context).unfocus();
       _form.currentState!.save();
 
@@ -63,9 +71,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "patientGender": dropdownValueGender,
             "patientState": dropdownValueState,
             "patientDescription": _pDescription,
-            "travelTime": _travelTime,
+            "travelTime": "10",
             "ambulanceNo": "ABC-12348",
-            "pickupLocation": "Kandy",
+            "pickupLocation": _pickedLocation,
           },
         ),
       );
@@ -84,8 +92,84 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
     }
   }
 
+  void _getCurrentLocation() async {
+    Location location = new Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    setState(() {
+      _isGettingLocation = true;
+    });
+
+    locationData = await location.getLocation();
+
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+
+    latitudeFinal = locationData.latitude!;
+    longitudeFinal = locationData.longitude!;
+
+    final url = Uri.parse(
+      "https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyAcKZHMOpRIqKUPAAP1U-n8Vp6nEtg7pcs",
+    );
+
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    final currentLocation = resData["results"][0]["formatted_address"];
+
+    _pickedLocation = currentLocation;
+
+    setState(() {
+      _isGettingLocation = false;
+    });
+
+    print(currentLocation);
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (longitudeFinal == 0 && latitudeFinal == 0) {
+      _getCurrentLocation();
+    }
+    Widget locationContent = Center(
+      child: Text("No Location Available"),
+    );
+
+    if (longitudeFinal != 0 && longitudeFinal != 0) {
+      locationContent = Image.network(
+        locationImage,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      );
+    }
+
+    if (_isGettingLocation) {
+      locationContent = Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: AppBar(
@@ -96,14 +180,14 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: Image.asset(
-                  "assets/images/logoTN2.png",
-                  width: 150,
-                ),
-              ),
-              const SizedBox(height: 25),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 32),
+              //   child: Image.asset(
+              //     "assets/images/logoTN2.png",
+              //     width: 150,
+              //   ),
+              // ),
+              // const SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Form(
@@ -186,25 +270,25 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         ),
                         DropdownButtonFormField(
                           decoration: InputDecoration(
-                              label: Text(
-                                "Gender:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(
-                                      color: const Color.fromARGB(155, 0, 0, 0),
-                                    ),
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              fillColor: Color.fromARGB(255, 240, 247, 255),
-                              filled: true,),
+                            label: Text(
+                              "Gender:",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                    color: const Color.fromARGB(155, 0, 0, 0),
+                                  ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                            fillColor: Color.fromARGB(255, 240, 247, 255),
+                            filled: true,
+                          ),
                           dropdownColor: Color.fromARGB(255, 203, 227, 254),
                           // value: dropdownValueGender,
                           validator: (value) {
@@ -270,7 +354,8 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                               child: Text(
                                 value,
                                 style: TextStyle(
-                                    fontSize: 18, color: const Color.fromARGB(255, 0, 0, 0)),
+                                    fontSize: 18,
+                                    color: const Color.fromARGB(255, 0, 0, 0)),
                               ),
                             );
                           }).toList(),
@@ -310,45 +395,54 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        TextFormField(
-                          style: TextStyle(fontSize: 18),
-                          keyboardType: TextInputType.number,
-                          textCapitalization: TextCapitalization.none,
-                          autocorrect: false,
-                          decoration: InputDecoration(
-                            label: Text(
-                              "Travel Time  (Min):",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    color: const Color.fromARGB(155, 0, 0, 0),
-                                  ),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.primary),
-                            ),
-                            fillColor: Color.fromARGB(255, 240, 247, 255),
-                            filled: true,
+                        // TextFormField(
+                        //   style: TextStyle(fontSize: 18),
+                        //   keyboardType: TextInputType.number,
+                        //   textCapitalization: TextCapitalization.none,
+                        //   autocorrect: false,
+                        //   decoration: InputDecoration(
+                        //     label: Text(
+                        //       "Travel Time  (Min):",
+                        //       style: Theme.of(context)
+                        //           .textTheme
+                        //           .titleMedium!
+                        //           .copyWith(
+                        //             color: const Color.fromARGB(155, 0, 0, 0),
+                        //           ),
+                        //     ),
+                        //     enabledBorder: const OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Colors.white),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //           color: Theme.of(context).colorScheme.primary),
+                        //     ),
+                        //     fillColor: Color.fromARGB(255, 240, 247, 255),
+                        //     filled: true,
+                        //   ),
+                        //   validator: (value) {
+                        //     if (value == null || value.trim().isEmpty) {
+                        //       return "Please enter a valid time in minutes";
+                        //     }
+                        //     return null;
+                        //   },
+                        //   onSaved: (value) {
+                        //     _travelTime = value!;
+                        //   },
+                        // ),
+                        // const SizedBox(
+                        //   height: 12,
+                        // ),
+
+                        Container(
+                          height: 150,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color.fromARGB(255, 240, 247, 255),
                           ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Please enter a valid time in minutes";
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _travelTime = value!;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        // forgot password?
+                          child: locationContent,
+                        ), // forgot password?
                       ],
                     ),
                   ),

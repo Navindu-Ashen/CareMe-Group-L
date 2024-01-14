@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:project/screens/ambulance_list_screen.dart';
+import 'package:project/screens/hospital_list_screen.dart';
 import 'package:project/screens/patient_list_screen.dart';
 import 'package:project/screens/profile_screen.dart';
 
