@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/widgets/patient_card.dart';
 
 class PatientList extends StatelessWidget {
   const PatientList({super.key});
@@ -6,18 +7,13 @@ class PatientList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Patitnt List"),
-      ),
-      body: Center(
-        child: Text(
-          "Patient List",
-          style: TextStyle(
-            fontSize: 24,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+        appBar: AppBar(
+          title: Text("Patitnt List"),
         ),
-      ),
-    );
+        body: Column(
+          children: [
+            PatientCard(),
+          ],
+        ));
   }
 }

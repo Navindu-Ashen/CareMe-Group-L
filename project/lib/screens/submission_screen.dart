@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:project/screens/help_screen.dart';
 import 'package:project/screens/results_screen.dart';
 import 'package:uuid/uuid.dart';
-import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
+import 'package:project/model/patient_data.dart';
 
 const uuid = Uuid();
+double latitudeFinal = 0;
+double longitudeFinal = 0;
 
 class SubmissionScreen extends StatefulWidget {
   const SubmissionScreen({super.key});
@@ -23,12 +26,12 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   var _isSending = false;
   var _pName = "";
   var _pAge = "";
-  var _pDescription = "";
+  var _pDescription = "Not available";
   // var _travelTime = "";
-  var _pickedLocation = "";
+  var _pickedLocation;
   var _isGettingLocation = false;
-  double latitudeFinal = 0;
-  double longitudeFinal = 0;
+  var _isLocationSet = false;
+  var _isHandedOver = false;
 
   String get locationImage {
     return "https://maps.googleapis.com/maps/api/staticmap?center=$latitudeFinal, $longitudeFinal&zoom=17&size=600x300&maptype=roadmap&markers=color:red%7Clabel:P%7C$latitudeFinal,$longitudeFinal&key=AIzaSyAcKZHMOpRIqKUPAAP1U-n8Vp6nEtg7pcs";
@@ -46,6 +49,14 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
     var _rollNumber = uuid.v4();
 
     if (_form.currentState!.validate()) {
+      if (!_isLocationSet) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Please set the location")),
+        );
+        return;
+      }
+
       FocusScope.of(context).unfocus();
       _form.currentState!.save();
 
@@ -56,6 +67,11 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
       final url = Uri.https(
         "careme-test1-default-rtdb.firebaseio.com",
         "ambulance-request.json",
+      );
+
+      final urlCopy = Uri.https(
+        "careme-test1-default-rtdb.firebaseio.com",
+        "ambulance-request-copy.json",
       );
 
       final responce = await http.post(
@@ -74,6 +90,28 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "travelTime": "10",
             "ambulanceNo": "ABC-12348",
             "pickupLocation": _pickedLocation,
+            "handedOver": _isHandedOver,
+          },
+        ),
+      );
+
+      final responceCopy = await http.post(
+        urlCopy,
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: json.encode(
+          {
+            "patientId": _rollNumber,
+            "patientName": _pName,
+            "patientAge": _pAge,
+            "patientGender": dropdownValueGender,
+            "patientState": dropdownValueState,
+            "patientDescription": _pDescription,
+            "travelTime": "10",
+            "ambulanceNo": "ABC-12348",
+            "pickupLocation": _pickedLocation,
+            "handedOver": _isHandedOver,
           },
         ),
       );
@@ -83,13 +121,29 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
       if (!context.mounted) {
         return;
       }
+      print(resData["patientName"]);
+
+      final currentPatient = PatientData(
+        databaseId: resData["name"],
+        patientId: _rollNumber,
+        patientName: _pName,
+        patientAge: _pAge,
+        patientGender: dropdownValueGender,
+        patientState: dropdownValueState,
+        patientDescription: _pDescription,
+        travelTime: "10min",
+        ambulanceNumber: "abc-1234",
+        pickedLocation: _pickedLocation,
+        isHandedOver: _isHandedOver,
+      );
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (ctx) => ResultsScreen(),
+          builder: (ctx) => ResultsScreen(currentDatabaseId: currentPatient.databaseId),
         ),
       );
     }
+    return;
   }
 
   void _getCurrentLocation() async {
@@ -117,6 +171,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
 
     setState(() {
       _isGettingLocation = true;
+      _isLocationSet = true;
     });
 
     locationData = await location.getLocation();
@@ -140,20 +195,21 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
     setState(() {
       _isGettingLocation = false;
     });
-
+    print(longitudeFinal);
+    print(latitudeFinal);
     print(currentLocation);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (longitudeFinal == 0 && latitudeFinal == 0) {
-      _getCurrentLocation();
-    }
     Widget locationContent = Center(
-      child: Text("No Location Available"),
+      child: ElevatedButton(
+        onPressed: _getCurrentLocation,
+        child: Text("Get Current Location"),
+      ),
     );
 
-    if (longitudeFinal != 0 && longitudeFinal != 0) {
+    if (_pickedLocation != null) {
       locationContent = Image.network(
         locationImage,
         fit: BoxFit.cover,
@@ -180,14 +236,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 32),
-              //   child: Image.asset(
-              //     "assets/images/logoTN2.png",
-              //     width: 150,
-              //   ),
-              // ),
-              // const SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Form(
@@ -363,7 +411,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-
                         TextFormField(
                           style: TextStyle(fontSize: 18),
                           textCapitalization: TextCapitalization.sentences,
@@ -395,45 +442,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         const SizedBox(
                           height: 12,
                         ),
-                        // TextFormField(
-                        //   style: TextStyle(fontSize: 18),
-                        //   keyboardType: TextInputType.number,
-                        //   textCapitalization: TextCapitalization.none,
-                        //   autocorrect: false,
-                        //   decoration: InputDecoration(
-                        //     label: Text(
-                        //       "Travel Time  (Min):",
-                        //       style: Theme.of(context)
-                        //           .textTheme
-                        //           .titleMedium!
-                        //           .copyWith(
-                        //             color: const Color.fromARGB(155, 0, 0, 0),
-                        //           ),
-                        //     ),
-                        //     enabledBorder: const OutlineInputBorder(
-                        //       borderSide: BorderSide(color: Colors.white),
-                        //     ),
-                        //     focusedBorder: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //           color: Theme.of(context).colorScheme.primary),
-                        //     ),
-                        //     fillColor: Color.fromARGB(255, 240, 247, 255),
-                        //     filled: true,
-                        //   ),
-                        //   validator: (value) {
-                        //     if (value == null || value.trim().isEmpty) {
-                        //       return "Please enter a valid time in minutes";
-                        //     }
-                        //     return null;
-                        //   },
-                        //   onSaved: (value) {
-                        //     _travelTime = value!;
-                        //   },
-                        // ),
-                        // const SizedBox(
-                        //   height: 12,
-                        // ),
-
                         Container(
                           height: 150,
                           width: double.infinity,
@@ -442,7 +450,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             color: Color.fromARGB(255, 240, 247, 255),
                           ),
                           child: locationContent,
-                        ), // forgot password?
+                        ),
                       ],
                     ),
                   ),
