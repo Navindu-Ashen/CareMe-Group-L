@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project/screens/help_screen.dart';
 import 'package:project/screens/results_screen.dart';
@@ -64,15 +66,29 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         _isSending = true;
       });
 
+      print("Saveing successs........................................................");
+
+      final user = FirebaseAuth.instance.currentUser!;
+      final userData = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid)
+          .get();
+
+      print("Get user data success...................................................");
+
       final url = Uri.https(
         "careme-test1-default-rtdb.firebaseio.com",
         "ambulance-request.json",
       );
 
+      print("Url 1 success............................................................");
+
       final urlCopy = Uri.https(
         "careme-test1-default-rtdb.firebaseio.com",
         "ambulance-request-copy.json",
       );
+
+      print("Url 2 success............................................................");
 
       final responce = await http.post(
         url,
@@ -88,12 +104,13 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "patientState": dropdownValueState,
             "patientDescription": _pDescription,
             "travelTime": "10",
-            "ambulanceNo": "ABC-12348",
+            "ambulanceNo": userData.data()!["vehical-number"],
             "pickupLocation": _pickedLocation,
-            "handedOver": _isHandedOver,
           },
         ),
       );
+
+      print("Responce 1 success............................................................");
 
       final responceCopy = await http.post(
         urlCopy,
@@ -109,18 +126,22 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "patientState": dropdownValueState,
             "patientDescription": _pDescription,
             "travelTime": "10",
-            "ambulanceNo": "ABC-12348",
+            "ambulanceNo": userData.data()!["vehical-number"],
             "pickupLocation": _pickedLocation,
-            "handedOver": _isHandedOver,
           },
         ),
       );
+
+      print("Responce 2 success............................................................");
+
       print(responce.statusCode);
+
       final Map<String, dynamic> resData = json.decode(responce.body);
 
       if (!context.mounted) {
         return;
       }
+
       print(resData["patientName"]);
 
       final currentPatient = PatientData(
@@ -139,7 +160,8 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (ctx) => ResultsScreen(currentDatabaseId: currentPatient.databaseId),
+          builder: (ctx) =>
+              ResultsScreen(currentDatabaseId: currentPatient.databaseId),
         ),
       );
     }
