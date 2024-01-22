@@ -39,7 +39,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   var _isLocationSet = false;
   var _isHandedOver = false;
   late Directions _info;
-  var _isGetRoute = false;
 
   var hospitalName;
   double hospitalLat = 0;
@@ -150,7 +149,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
       print(
           "Responce 1 success............................................................");
 
-      final responceCopy = await http.post(
+      await http.post(
         urlCopy,
         headers: {
           "Content-type": "application/json",
@@ -410,6 +409,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           ),
                           dropdownColor: Color.fromARGB(255, 203, 227, 254),
                           // value: dropdownValueGender,
+                          // ignore: body_might_complete_normally_nullable
                           validator: (value) {
                             if (value == null) {
                               return "Please select a gender.";
@@ -456,6 +456,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             filled: true,
                           ),
                           dropdownColor: Color.fromARGB(255, 203, 227, 254),
+                          // ignore: body_might_complete_normally_nullable
                           validator: (value) {
                             if (value == null) {
                               return "Please select a state.";
