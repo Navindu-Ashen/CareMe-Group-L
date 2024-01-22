@@ -23,11 +23,17 @@ class _PatientListState extends State<PatientList> {
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: Container(
         child: FirebaseAnimatedList(
+          defaultChild: Center(
+            child: CircularProgressIndicator(),
+          ),
+          
           query: dbRef,
           itemBuilder: (BuildContext context, DataSnapshot snapshot,
               Animation<double> animation, int index) {
             Map patient = snapshot.value as Map;
             patient['key'] = snapshot.key;
+
+            // Map filteredPatients = patient["patientName"] == "Navindu";
 
             return PatientCard(patient: patient);
           },

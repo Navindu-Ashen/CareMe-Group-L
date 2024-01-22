@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project/screens/hospital_list_screen.dart';
 import 'package:project/screens/help_screen.dart';
 import 'package:project/screens/patient_list_screen.dart';
+import 'package:project/screens/profile_screen.dart';
 import 'package:project/screens/submission_screen.dart';
 import 'package:project/widgets/main_drawer.dart';
 
@@ -67,10 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       _isGetUserData = true;
     }
-
-    print(userName);
-    print(vehicalNumber);
-    print(userImageUrl);
   }
 
   @override
@@ -96,56 +93,68 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.black, width: 2),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.medical_services_outlined,
-                        size: 50,
-                        color: Color.fromARGB(255, 255, 60, 60),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => ProfileScreen(),
                       ),
-                      SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            userName.length > 10 ? userName.substring(0, 10)+'...' : userName,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 191, 213, 248),
+                      border: Border.all(
+                          color: const Color.fromARGB(141, 0, 0, 0), width: 2),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        if (userImageUrl != null)
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(userImageUrl!),
+                            backgroundColor: Color.fromARGB(155, 136, 136, 136),
+                            radius: 30,
+                          ),
+                        if (userImageUrl == null)
+                          CircleAvatar(
+                            backgroundColor: Color.fromARGB(155, 136, 136, 136),
+                            radius: 30,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: const Color.fromARGB(255, 20, 96, 165),
+                              ),
                             ),
                           ),
-                          Text(
-                            vehicalNumber,
-                            style: TextStyle(
-                                fontSize: 16,
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              userName.length > 20
+                                  ? userName.substring(0, 20) + '...'
+                                  : userName,
+                              style: TextStyle(
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(155, 136, 136, 136)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      if (userImageUrl != null)
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(userImageUrl!),
-                          backgroundColor: Color.fromARGB(155, 136, 136, 136),
-                          radius: 30,
+                              ),
+                            ),
+                            Text(
+                              vehicalNumber,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(155, 119, 119, 119)),
+                            ),
+                          ],
                         ),
-                      if (userImageUrl == null)
-                        CircleAvatar(
-                          backgroundColor: Color.fromARGB(155, 136, 136, 136),
-                          radius: 30,
+                        SizedBox(
+                          width: 12,
                         ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

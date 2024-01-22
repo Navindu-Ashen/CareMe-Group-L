@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isAuthenticating = true;
       });
-      final userCredentials = await _firebase.signInWithEmailAndPassword(
+      await _firebase.signInWithEmailAndPassword(
           email: _enteredEmail, password: _enteredPassword);
     } on FirebaseAuthException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(

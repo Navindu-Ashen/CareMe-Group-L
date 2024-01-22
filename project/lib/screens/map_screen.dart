@@ -1,17 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project/direction-data/directions_model.dart';
+import 'package:project/direction-data/directions_repository.dart';
 import 'package:project/screens/submission_screen.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  const MapScreen({
+    super.key,
+    required this.hospitalName,
+    required this.hospitalLat,
+    required this.hospitalLon,
+  });
+
+  final String hospitalName;
+  final double hospitalLat;
+  final double hospitalLon;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
+  late GoogleMapController _googleMapController;
+  Directions? _info;
+  var _isGetRoute = false;
+
+  void getRoute() async {
+    final directions = await DirectionsRepository().getDirections(
+      origin: LatLng(latitudeFinal, longitudeFinal),
+      destination: LatLng(widget.hospitalLat, widget.hospitalLon),
+    );
+    _info = directions;
+    if (_info == null) {
+      getRoute();
+    }
+    setState(() {
+      _isGetRoute = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _googleMapController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_isGetRoute) {
+      getRoute();
+    }
+
+    // getRoute();
+    print(widget.hospitalName + ".........................................");
+    print(widget.hospitalLat);
+    print(widget.hospitalLon);
+
     Widget mapContent = Stack(
       children: [
         Container(
@@ -27,16 +71,35 @@ class _MapScreenState extends State<MapScreen> {
           ),
           height: 620,
           child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: LatLng(latitudeFinal, longitudeFinal),
-                zoom: 16,
+            zoomControlsEnabled: false,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(latitudeFinal, longitudeFinal),
+              zoom: 14,
+            ),
+            onMapCreated: (controller) => _googleMapController = controller,
+            markers: {
+              Marker(
+                markerId: MarkerId("currentLocation"),
+                position: LatLng(latitudeFinal, longitudeFinal),
+                infoWindow: InfoWindow(title: "Pickup location"),
               ),
-              markers: {
-                Marker(
-                  markerId: MarkerId("A"),
-                  position: LatLng(latitudeFinal, longitudeFinal),
-                ),
-              }),
+              Marker(
+                markerId: MarkerId("hospitalLocation"),
+                position: LatLng(widget.hospitalLat, widget.hospitalLon),
+                infoWindow: InfoWindow(title: widget.hospitalName),
+              ),
+            },
+            polylines: {
+              Polyline(
+                polylineId: const PolylineId('overview_polyline'),
+                color: Colors.red,
+                width: 5,
+                points: _info!.polylinePoints
+                    .map((e) => LatLng(e.latitude, e.longitude))
+                    .toList(),
+              ),
+            },
+          ),
         ),
         Container(
           height: 60,
@@ -51,7 +114,45 @@ class _MapScreenState extends State<MapScreen> {
               end: Alignment.bottomCenter,
             ),
           ),
-        )
+        ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton(
+            heroTag: "btn1",
+            onPressed: () => _googleMapController.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: LatLng(latitudeFinal, longitudeFinal),
+                  zoom: 14,
+                ),
+              ),
+            ),
+            child: Icon(
+              Icons.location_on_rounded,
+              size: 30,
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 90,
+          right: 16,
+          child: FloatingActionButton(
+            heroTag: "btn2",
+            onPressed: () => _googleMapController.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: LatLng(widget.hospitalLat, widget.hospitalLon),
+                  zoom: 14,
+                ),
+              ),
+            ),
+            child: Icon(
+              Icons.medical_services_rounded,
+              size: 30,
+            ),
+          ),
+        ),
       ],
     );
     // if (longitudeFinal == 0 && latitudeFinal == 0) {
@@ -90,7 +191,7 @@ class _MapScreenState extends State<MapScreen> {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "National Hospital Sri Lanka",
+                    widget.hospitalName,
                     style: TextStyle(
                         fontSize: 24,
                         color: Colors.white,
@@ -115,14 +216,14 @@ class _MapScreenState extends State<MapScreen> {
               child: Column(
                 children: [
                   Text(
-                    "Time estimated: ",
+                    "Total distance and duration:",
                     style: TextStyle(
                         fontSize: 20,
                         color: Color.fromARGB(255, 200, 200, 200),
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "10 Min",
+                    '${_info!.totalDistance}, ${_info!.totalDuration}',
                     style: TextStyle(
                         fontSize: 24,
                         color: Colors.white,

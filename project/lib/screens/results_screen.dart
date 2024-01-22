@@ -3,9 +3,20 @@ import 'package:project/screens/map_screen.dart';
 import 'package:http/http.dart' as http;
 
 class ResultsScreen extends StatefulWidget {
-  const ResultsScreen({super.key, required this.currentDatabaseId});
+  const ResultsScreen({
+    super.key,
+    required this.currentDatabaseId,
+    required this.hospitalName,
+    required this.hospitalLat,
+    required this.hospitalLon,
+    required this.timeEstimated,
+  });
 
   final String currentDatabaseId;
+  final String hospitalName;
+  final double hospitalLat;
+  final double hospitalLon;
+  final String timeEstimated;
 
   @override
   State<ResultsScreen> createState() => _ResultsScreenState();
@@ -88,7 +99,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         color: const Color.fromARGB(255, 226, 226, 226),
                       ),
                       child: Text(
-                        'National Hospital Sri Lanka',
+                        widget.hospitalName,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
@@ -117,7 +128,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 child: Column(
                   children: [
                     Text(
-                      'Estimated Travel Time',
+                      'Estimated Travel Time and Distance:',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -131,9 +142,9 @@ class _ResultsScreenState extends State<ResultsScreen> {
                           color: Color.fromARGB(255, 255, 255, 255),
                           borderRadius: BorderRadius.circular(16)),
                       child: Text(
-                        '10 min',
+                        widget.timeEstimated,
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: const Color.fromARGB(255, 107, 145, 196),
                         ),
@@ -150,7 +161,11 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx) => MapScreen(),
+                      builder: (ctx) => MapScreen(
+                        hospitalName: widget.hospitalName,
+                        hospitalLat: widget.hospitalLat,
+                        hospitalLon: widget.hospitalLon,
+                      ),
                     ),
                   );
                 },

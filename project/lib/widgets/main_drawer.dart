@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:project/screens/profile_screen.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({super.key});
+  const MainDrawer({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project/direction-data/directions_model.dart';
+import 'package:project/direction-data/directions_repository.dart';
 import 'package:project/screens/help_screen.dart';
 import 'package:project/screens/results_screen.dart';
 import 'package:uuid/uuid.dart';
@@ -23,6 +26,7 @@ class SubmissionScreen extends StatefulWidget {
 
 class _SubmissionScreenState extends State<SubmissionScreen> {
   final _form = GlobalKey<FormState>();
+
   String dropdownValueGender = "Male";
   String dropdownValueState = 'Normal';
   var _isSending = false;
@@ -34,6 +38,12 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   var _isGettingLocation = false;
   var _isLocationSet = false;
   var _isHandedOver = false;
+  late Directions _info;
+  var _isGetRoute = false;
+
+  var hospitalName;
+  double hospitalLat = 0;
+  double hospitalLon = 0;
 
   String get locationImage {
     return "https://maps.googleapis.com/maps/api/staticmap?center=$latitudeFinal, $longitudeFinal&zoom=17&size=600x300&maptype=roadmap&markers=color:red%7Clabel:P%7C$latitudeFinal,$longitudeFinal&key=AIzaSyAcKZHMOpRIqKUPAAP1U-n8Vp6nEtg7pcs";
@@ -66,7 +76,8 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         _isSending = true;
       });
 
-      print("Saveing successs........................................................");
+      print(
+          "Saveing successs........................................................");
 
       final user = FirebaseAuth.instance.currentUser!;
       final userData = await FirebaseFirestore.instance
@@ -74,21 +85,46 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
           .doc(user.uid)
           .get();
 
-      print("Get user data success...................................................");
+      print(
+          "Get user data success...................................................");
+
+      final hospitalData = await FirebaseFirestore.instance
+          .collection("hospitals")
+          .doc("hospital1")
+          .get();
+      hospitalName = hospitalData.data()!["hospitalName"];
+      hospitalLat = hospitalData.data()!["latitude"];
+      hospitalLon = hospitalData.data()!["longitude"];
+
+      final directions = await DirectionsRepository().getDirections(
+        origin: LatLng(latitudeFinal, longitudeFinal),
+        destination: LatLng(hospitalLat, hospitalLon),
+      );
+      if (directions == null) {}
+      _info = directions!;
+
+      print(
+          "Get google maps data success...................................................");
+
+      String dateTime = DateTime.now().toString();
+
+      print(dateTime);
 
       final url = Uri.https(
         "careme-test1-default-rtdb.firebaseio.com",
         "ambulance-request.json",
       );
 
-      print("Url 1 success............................................................");
+      print(
+          "Url 1 success............................................................");
 
       final urlCopy = Uri.https(
         "careme-test1-default-rtdb.firebaseio.com",
         "ambulance-request-copy.json",
       );
 
-      print("Url 2 success............................................................");
+      print(
+          "Url 2 success............................................................");
 
       final responce = await http.post(
         url,
@@ -103,14 +139,16 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "patientGender": dropdownValueGender,
             "patientState": dropdownValueState,
             "patientDescription": _pDescription,
-            "travelTime": "10",
+            "travelTime": _info.totalDuration,
             "ambulanceNo": userData.data()!["vehical-number"],
             "pickupLocation": _pickedLocation,
+            "pickupTime": dateTime,
           },
         ),
       );
 
-      print("Responce 1 success............................................................");
+      print(
+          "Responce 1 success............................................................");
 
       final responceCopy = await http.post(
         urlCopy,
@@ -125,14 +163,16 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "patientGender": dropdownValueGender,
             "patientState": dropdownValueState,
             "patientDescription": _pDescription,
-            "travelTime": "10",
+            "travelTime": _info.totalDuration,
             "ambulanceNo": userData.data()!["vehical-number"],
             "pickupLocation": _pickedLocation,
+            "pickupTime": dateTime,
           },
         ),
       );
 
-      print("Responce 2 success............................................................");
+      print(
+          "Responce 2 success............................................................");
 
       print(responce.statusCode);
 
@@ -158,10 +198,18 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
         isHandedOver: _isHandedOver,
       );
 
+      final String timeEnstimated =
+          "${_info.totalDuration} , ${_info.totalDistance}";
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (ctx) =>
-              ResultsScreen(currentDatabaseId: currentPatient.databaseId),
+          builder: (ctx) => ResultsScreen(
+            currentDatabaseId: currentPatient.databaseId,
+            hospitalName: hospitalName,
+            hospitalLat: hospitalLat,
+            hospitalLon: hospitalLon,
+            timeEstimated: timeEnstimated,
+          ),
         ),
       );
     }
@@ -169,6 +217,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   }
 
   void _getCurrentLocation() async {
+    FocusScope.of(context).unfocus();
     Location location = new Location();
 
     bool serviceEnabled;

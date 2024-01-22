@@ -45,6 +45,10 @@ dependencies:
   location: ^5.0.3
   firebase_database: ^10.4.0
   cloud_firestore: ^4.14.0
+  flutter_polyline_points: ^2.0.0
+  dio: ^5.4.0
+  connectivity_plus: ^5.0.2
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +90,8 @@ flutter:
     - assets/images/logo3D.png
     - assets/images/CareMeText3DT.png
     - assets/images/Gmap_logo.png
+    - assets/images/Gmap_logo2.png
+    
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

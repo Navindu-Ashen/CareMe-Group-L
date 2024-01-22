@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:project/widgets/profile_card.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
-      body: Center(
-        child: Text(
-          "Profile Screen",
-          style: TextStyle(
-            fontSize: 24,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-      ),
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      body: ProfileCard(),
     );
   }
 }

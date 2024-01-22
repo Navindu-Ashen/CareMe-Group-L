@@ -10,89 +10,97 @@ class PatientCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Card(
-        color: Color.fromARGB(255, 197, 197, 197),
+        color: Color.fromARGB(255, 156, 188, 238),
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           width: double.infinity,
           child: Column(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Container(
+                height: 103,
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Container(
+                            width: 215,
+                            child: Text(
+                              patient["patientName"],
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 66, 89, 121),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "${patient["patientAge"]} yrs",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 66, 89, 121),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      padding: EdgeInsets.all(12),
+                      child: Image.asset(
+                        "assets/images/icon.png",
+                        width: 50,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Column(
                 children: [
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    padding: EdgeInsets.all(12),
-                    child: Image.asset(
-                      "assets/images/icon.png",
-                      width: 80,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 66, 89, 121),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                          width: 215,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
                           child: Text(
-                            patient["patientName"],
+                            "Patient State:",
                             style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 224, 224, 224),
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 8,
-                        ),
                         Text(
-                          "${patient["patientAge"]} yrs",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 224, 224, 224),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text("Patient State"),
-                      Container(
-                        width: 160,
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: const Color.fromARGB(255, 66, 89, 121),
-                        ),
-                        child: Text(
                           patient["patientState"],
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -101,20 +109,35 @@ class PatientCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      Text("Ambulance Number"),
-                      Container(
-                        width: 180,
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: const Color.fromARGB(255, 66, 89, 121),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color.fromARGB(255, 66, 89, 121),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            "Ambulance No:",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                        child: Text(
+                        Text(
                           patient["ambulanceNo"],
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -123,8 +146,8 @@ class PatientCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -133,23 +156,36 @@ class PatientCard extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Text("Pickup Location"),
                   Container(
+                    height: 110,
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 66, 89, 121),
                     ),
-                    child: Text(
-                      patient["pickupLocation"].trim().length > 50
-                          ? patient["pickupLocation"].substring(0, 50) + '...'
-                          : patient["pickupLocation"],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              "Pickup Location:",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            patient["pickupLocation"],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
