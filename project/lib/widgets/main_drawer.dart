@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project/screens/help_screen.dart';
 import 'package:project/screens/profile_screen.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -51,6 +52,34 @@ class MainDrawer extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (ctx) => ProfileScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Card(
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.info_outline_rounded,
+                          size: 30,
+                          color: Color.fromARGB(255, 66, 89, 120),
+                        ),
+                        title: Text(
+                          "About Us",
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: Color.fromARGB(255, 66, 89, 120),
+                                    fontSize: 20,
+                                  ),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => HelpScreen(),
                             ),
                           );
                         },
