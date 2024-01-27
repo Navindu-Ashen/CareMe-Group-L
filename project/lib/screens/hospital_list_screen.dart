@@ -10,45 +10,53 @@ class HospitalListScreen extends StatefulWidget {
 }
 
 class _HospitalListScreenState extends State<HospitalListScreen> {
-  var hospitalName;
-  var imageUrl;
-  double lat = 0;
-  double lon = 0;
-
-  void _getHospitalData() async {
-    final hospitalData = await FirebaseFirestore.instance
-        .collection("hospitals")
-        .doc("hospital1")
-        .get();
-    setState(() {
-      hospitalName = hospitalData.data()!["hospitalName"];
-      imageUrl = hospitalData.data()!["imageUrl"];
-      lat = hospitalData.data()!["latitude"];
-      lon = hospitalData.data()!["longitude"];
-    });
-    
-  }
-
   @override
-  Widget build(BuildContext context) { 
-    if(hospitalName == null){
-      _getHospitalData();
-    }
+  Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Hospital List"),
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        ),
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        body: Column(
-          children: [
-            HospitalCard(
-              hospitalName: hospitalName,
-              imageUrl: imageUrl,
-              latitude: lat,
-              longitude: lon,
-            ),
-          ],
-        ));
+        title: Text("Hospital List"),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("hospitals").snapshots(),
+        builder: (cxt, chatSnapshot) {
+          if (chatSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (!chatSnapshot.hasData || chatSnapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text("No Hospitals added"),
+            );
+          }
+
+          if (chatSnapshot.hasError) {
+            return const Center(
+              child: Text("Somthing went wrong"),
+            );
+          }
+
+          final loadedData = chatSnapshot.data!.docs;
+
+          return ListView.builder(
+            reverse: false,
+            itemCount: loadedData.length,
+            itemBuilder: (context, index) {
+              final currentData = loadedData[index].data();
+
+              return HospitalCard(
+                hospitalName: currentData["hospitalName"],
+                imageUrl: currentData["imageUrl"],
+                latitude: currentData["latitude"],
+                longitude: currentData["longitude"],
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }

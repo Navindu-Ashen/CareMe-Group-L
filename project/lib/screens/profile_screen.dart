@@ -14,7 +14,35 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: ProfileCard(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ProfileCard(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Copyright",
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.copyright,
+                size: 14,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                "2024, CareMe",
+                style: TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

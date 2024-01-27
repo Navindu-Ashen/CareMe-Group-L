@@ -145,7 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                         const SizedBox(height: 10),
-                        
 
                         // forgot password?
                         Row(
@@ -163,19 +162,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 25),
                 if (_isAuthenticating)
-                  GestureDetector(
-                    onTap: _submit,
-                    child: Container(
-                      padding: const EdgeInsets.all(25),
-                      margin: const EdgeInsets.symmetric(horizontal: 25),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
+                  Container(
+                    // height: 50,
+                    padding: const EdgeInsets.all(18),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0, 3),
+                          blurRadius: 10,
+                          spreadRadius: -5,
+                          color: Color.fromARGB(155, 0, 0, 0),
                         ),
+                      ],
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -188,6 +193,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, 3),
+                            blurRadius: 10,
+                            spreadRadius: -5,
+                            color: Color.fromARGB(155, 0, 0, 0),
+                          ),
+                        ],
                       ),
                       child: const Center(
                         child: Text(

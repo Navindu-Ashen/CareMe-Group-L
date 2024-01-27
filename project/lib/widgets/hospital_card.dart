@@ -20,7 +20,7 @@ class HospitalCard extends StatefulWidget {
 }
 
 class _HospitalCardState extends State<HospitalCard> {
-  void test() {
+  void getGoogleMap() {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => MapHospitalScreen(
@@ -35,12 +35,20 @@ class _HospitalCardState extends State<HospitalCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Card(
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Color.fromARGB(255, 156, 188, 238),
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(0, 2),
+                blurRadius: 10,
+                spreadRadius: -5,
+                color: const Color.fromARGB(100, 0, 0, 0),
+              ),
+            ],
           ),
           width: double.infinity,
           padding: EdgeInsets.symmetric(
@@ -115,7 +123,7 @@ class _HospitalCardState extends State<HospitalCard> {
                 height: 8,
               ),
               GestureDetector(
-                onTap: test,
+                onTap: getGoogleMap,
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 12),

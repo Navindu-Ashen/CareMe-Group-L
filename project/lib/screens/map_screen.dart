@@ -65,7 +65,7 @@ class _MapScreenState extends State<MapScreen> {
               BoxShadow(
                   offset: Offset(0, 0),
                   blurRadius: 10,
-                  spreadRadius: 8,
+                  spreadRadius: 0,
                   color: Colors.black54),
             ],
           ),
@@ -162,82 +162,80 @@ class _MapScreenState extends State<MapScreen> {
     // }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      // appBar: AppBar(
-      //   // title: Text("Hospital Direction"),
-      //   backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      // ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          mapContent,
-          SizedBox(
-            height: 16,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(16)),
-              child: Column(
-                children: [
-                  Text(
-                    "Selected Hospital: ",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 200, 200, 200),
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    widget.hospitalName,
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            mapContent,
+            SizedBox(
+              height: 24,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(16)),
+                child: Column(
+                  children: [
+                    Text(
+                      "Selected Hospital: ",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 200, 200, 200),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      widget.hospitalName,
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(16)),
-              child: Column(
-                children: [
-                  Text(
-                    "Total distance and duration:",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Color.fromARGB(255, 200, 200, 200),
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '${_info!.totalDistance}, ${_info!.totalDuration}',
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                  ),
-                ],
+            SizedBox(
+              height: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(16)),
+                child: Column(
+                  children: [
+                    Text(
+                      "Total distance and duration:",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 200, 200, 200),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '${_info!.totalDistance}, ${_info!.totalDuration}',
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 16,
-          )
-        ],
+            SizedBox(
+              height: 16,
+            )
+          ],
+        ),
       ),
     );
   }

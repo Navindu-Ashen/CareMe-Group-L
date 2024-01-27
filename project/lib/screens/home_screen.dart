@@ -16,8 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var userName = "Data Fetching Failed";
-  var vehicalNumber = "Data Fetching Failed";
+  var userName = "Loding...";
+  var vehicalNumber = "Loding...";
   var userImageUrl;
   var _isGetUserData = false;
 
@@ -163,10 +163,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0, 8),
+                      offset: Offset(0, 3),
                       color: Color.fromARGB(155, 64, 64, 64),
-                      spreadRadius: 5,
-                      blurRadius: 10,
+                      spreadRadius: 4,
+                      blurRadius: 8,
                     ),
                   ],
                   shape: BoxShape.circle,
@@ -222,17 +222,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Card(
-                        color: const Color.fromARGB(255, 20, 96, 165),
-                        child: ListTile(
-                          onTap: _changeScreenPatients,
-                          title: Center(
-                            child: Text(
-                              "Patient List",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0, 1),
+                              blurRadius: 10,
+                              spreadRadius: -8,
+                              color: Color.fromARGB(100, 0, 0, 0),
+                            ),
+                          ],
+                        ),
+                        child: Card(
+                          color: const Color.fromARGB(255, 20, 96, 165),
+                          child: ListTile(
+                            onTap: _changeScreenPatients,
+                            title: Center(
+                              child: Text(
+                                "Patient List",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -244,17 +256,29 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Card(
-                        color: const Color.fromARGB(255, 20, 96, 165),
-                        child: ListTile(
-                          onTap: _changeScreenHospitals,
-                          title: Center(
-                            child: Text(
-                              "Hospital List",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0, 1),
+                              blurRadius: 10,
+                              spreadRadius: -8,
+                              color: Color.fromARGB(100, 0, 0, 0),
+                            ),
+                          ],
+                        ),
+                        child: Card(
+                          color: const Color.fromARGB(255, 20, 96, 165),
+                          child: ListTile(
+                            onTap: _changeScreenHospitals,
+                            title: Center(
+                              child: Text(
+                                "Hospital List",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),

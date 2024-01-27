@@ -117,13 +117,32 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
       print(
           "Url 1 success............................................................");
 
-      final urlCopy = Uri.https(
-        "careme-test1-default-rtdb.firebaseio.com",
-        "ambulance-request-copy.json",
-      );
+      // final urlCopy = Uri.https(
+      //   "careme-test1-default-rtdb.firebaseio.com",
+      //   "ambulance-request-copy.json",
+      // );
+
+      // print(
+      //     "Url 2 success............................................................");
+
+      await FirebaseFirestore.instance
+          .collection("patients")
+          .doc(_rollNumber)
+          .set({
+            "patientId": _rollNumber,
+            "patientName": _pName,
+            "patientAge": _pAge,
+            "patientGender": dropdownValueGender,
+            "patientState": dropdownValueState,
+            "patientDescription": _pDescription,
+            "travelTime": _info.totalDuration,
+            "ambulanceNo": userData.data()!["vehical-number"],
+            "pickupLocation": _pickedLocation,
+            "pickupTime": dateTime,
+          });
 
       print(
-          "Url 2 success............................................................");
+          "Firestore success............................................................");
 
       final responce = await http.post(
         url,
@@ -149,29 +168,29 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
       print(
           "Responce 1 success............................................................");
 
-      await http.post(
-        urlCopy,
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: json.encode(
-          {
-            "patientId": _rollNumber,
-            "patientName": _pName,
-            "patientAge": _pAge,
-            "patientGender": dropdownValueGender,
-            "patientState": dropdownValueState,
-            "patientDescription": _pDescription,
-            "travelTime": _info.totalDuration,
-            "ambulanceNo": userData.data()!["vehical-number"],
-            "pickupLocation": _pickedLocation,
-            "pickupTime": dateTime,
-          },
-        ),
-      );
+      // await http.post(
+      //   urlCopy,
+      //   headers: {
+      //     "Content-type": "application/json",
+      //   },
+      //   body: json.encode(
+      //     {
+      //       "patientId": _rollNumber,
+      //       "patientName": _pName,
+      //       "patientAge": _pAge,
+      //       "patientGender": dropdownValueGender,
+      //       "patientState": dropdownValueState,
+      //       "patientDescription": _pDescription,
+      //       "travelTime": _info.totalDuration,
+      //       "ambulanceNo": userData.data()!["vehical-number"],
+      //       "pickupLocation": _pickedLocation,
+      //       "pickupTime": dateTime,
+      //     },
+      //   ),
+      // );
 
-      print(
-          "Responce 2 success............................................................");
+      // print(
+      //     "Responce 2 success............................................................");
 
       print(responce.statusCode);
 
@@ -538,6 +557,14 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0, 3),
+                          blurRadius: 10,
+                          spreadRadius: -5,
+                          color: Color.fromARGB(134, 0, 0, 0),
+                        )
+                      ],
                     ),
                     child: const Center(
                       child: Text(
@@ -555,7 +582,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                    padding: const EdgeInsets.all(22),
+                    padding: const EdgeInsets.all(17),
                     margin: const EdgeInsets.symmetric(horizontal: 25),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,

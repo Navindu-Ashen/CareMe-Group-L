@@ -1,14 +1,35 @@
 import 'package:flutter/material.dart';
 
 class PatientCard extends StatelessWidget {
-  const PatientCard({super.key, required this.patient});
+  const PatientCard({
+    super.key,
+    required this.patientName,
+    required this.patientAge,
+    required this.patientState,
+    required this.ambulaneNo,
+    required this.pickupLocation,
+  });
 
-  final Map patient;
+  final String patientName;
+  final String patientAge;
+  final String patientState;
+  final String ambulaneNo;
+  final String pickupLocation;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          offset: Offset(0, 0),
+          blurRadius: 10,
+          spreadRadius: -25,
+          color: const Color.fromARGB(100, 0, 0, 0),
+        )
+      ]),
       child: Card(
         color: Color.fromARGB(255, 156, 188, 238),
         child: Container(
@@ -19,13 +40,13 @@ class PatientCard extends StatelessWidget {
               Container(
                 height: 103,
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: Theme.of(context).colorScheme.primaryContainer,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SingleChildScrollView(
                       child: Column(
@@ -38,7 +59,7 @@ class PatientCard extends StatelessWidget {
                           Container(
                             width: 215,
                             child: Text(
-                              patient["patientName"],
+                              patientName,
                               style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
@@ -50,7 +71,7 @@ class PatientCard extends StatelessWidget {
                             height: 8,
                           ),
                           Text(
-                            "${patient["patientAge"]} yrs",
+                            "$patientAge yrs",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -101,7 +122,7 @@ class PatientCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          patient["patientState"],
+                          patientState,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -138,7 +159,7 @@ class PatientCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          patient["ambulanceNo"],
+                          ambulaneNo,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -157,9 +178,12 @@ class PatientCard extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                    height: 110,
+                    // height: 110,
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: const Color.fromARGB(255, 66, 89, 121),
@@ -177,7 +201,7 @@ class PatientCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            patient["pickupLocation"],
+                            pickupLocation,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,

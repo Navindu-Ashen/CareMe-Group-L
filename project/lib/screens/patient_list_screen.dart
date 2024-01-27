@@ -1,5 +1,4 @@
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project/widgets/patient_card.dart';
 
@@ -11,8 +10,6 @@ class PatientList extends StatefulWidget {
 }
 
 class _PatientListState extends State<PatientList> {
-  Query dbRef = FirebaseDatabase.instance.ref().child('ambulance-request-copy');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,23 +18,51 @@ class _PatientListState extends State<PatientList> {
         title: Text("Patitnt List"),
       ),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: Container(
-        child: FirebaseAnimatedList(
-          defaultChild: Center(
-            child: CircularProgressIndicator(),
-          ),
-          
-          query: dbRef,
-          itemBuilder: (BuildContext context, DataSnapshot snapshot,
-              Animation<double> animation, int index) {
-            Map patient = snapshot.value as Map;
-            patient['key'] = snapshot.key;
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("patients")
+            .orderBy(
+              "pickupTime",
+              descending: true,
+            )
+            .snapshots(),
+        builder: (cxt, chatSnapshot) {
+          if (chatSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-            // Map filteredPatients = patient["patientName"] == "Navindu";
+          if (!chatSnapshot.hasData || chatSnapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text("No Patients yet"),
+            );
+          }
 
-            return PatientCard(patient: patient);
-          },
-        ),
+          if (chatSnapshot.hasError) {
+            return const Center(
+              child: Text("Somthing went wrong"),
+            );
+          }
+
+          final loadedData = chatSnapshot.data!.docs;
+
+          return ListView.builder(
+            reverse: false,
+            itemCount: loadedData.length,
+            itemBuilder: (context, index) {
+              final currentData = loadedData[index].data();
+
+              return PatientCard(
+                patientName: currentData["patientName"],
+                patientAge: currentData["patientAge"],
+                patientState: currentData["patientState"],
+                ambulaneNo: currentData["ambulanceNo"],
+                pickupLocation: currentData["pickupLocation"],
+              );
+            },
+          );
+        },
       ),
     );
   }
