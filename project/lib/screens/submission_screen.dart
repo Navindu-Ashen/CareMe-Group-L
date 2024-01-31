@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:project/direction-data/directions_model.dart';
 import 'package:project/direction-data/directions_repository.dart';
 import 'package:project/screens/help_screen.dart';
@@ -105,9 +106,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
       print(
           "Get google maps data success...................................................");
 
-      String dateTime = DateTime.now().toString();
-
-      print(dateTime);
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('yyyy-MM-dd  kk:mm').format(now);
+      print(formattedDate);
 
       final url = Uri.https(
         "careme-test1-default-rtdb.firebaseio.com",
@@ -138,7 +139,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "travelTime": _info.totalDuration,
             "ambulanceNo": userData.data()!["vehical-number"],
             "pickupLocation": _pickedLocation,
-            "pickupTime": dateTime,
+            "pickupTime": formattedDate,
           });
 
       print(
@@ -160,7 +161,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             "travelTime": _info.totalDuration,
             "ambulanceNo": userData.data()!["vehical-number"],
             "pickupLocation": _pickedLocation,
-            "pickupTime": dateTime,
+            "pickupTime": formattedDate,
           },
         ),
       );
