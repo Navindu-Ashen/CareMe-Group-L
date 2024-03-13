@@ -104,9 +104,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 191, 213, 248),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0, 1),
+                          blurRadius: 2,
+                          spreadRadius: 1,
+                          color: Color.fromARGB(100, 0, 0, 0),
+                        ),
+                      ],
+                      color: Theme.of(context).colorScheme.primaryContainer,
                       border: Border.all(
-                          color: const Color.fromARGB(141, 0, 0, 0), width: 2),
+                        color: const Color.fromARGB(200, 0, 0, 0),
+                        width: 2,
+                      ),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Row(
@@ -163,18 +173,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0, 3),
-                      color: Color.fromARGB(155, 64, 64, 64),
-                      spreadRadius: 4,
+                      offset: Offset(5, 5),
+                      color: Colors.grey.shade500,
+                      spreadRadius: 1,
+                      blurRadius: 8,
+                    ),
+                    BoxShadow(
+                      offset: Offset(-5, -5),
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      spreadRadius: 1,
                       blurRadius: 8,
                     ),
                   ],
-                  shape: BoxShape.circle,
+                  // shape: BoxShape.circle,
                   border: Border.all(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    width: 5,
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    width: 10,
                   ),
+                  borderRadius: BorderRadius.circular(48),
                 ),
+                margin: EdgeInsets.symmetric(horizontal: 48),
                 child: GestureDetector(
                   onTap: () {
                     _changeScreenSubmission();
@@ -183,8 +201,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 275,
                     padding: EdgeInsets.symmetric(vertical: 30),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      shape: BoxShape.rectangle,
                       color: Color.fromARGB(255, 255, 88, 88),
+                      borderRadius: BorderRadius.circular(40),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

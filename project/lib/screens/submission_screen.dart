@@ -34,7 +34,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   var _pName = "";
   var _pAge = "";
   var _pDescription = "Not available";
-  // var _travelTime = "";
   var _pickedLocation;
   var _isGettingLocation = false;
   var _isLocationSet = false;

@@ -138,15 +138,15 @@ class HelpScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(16),
                 child: Column(
                   children: [
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: const Color.fromARGB(255, 217, 217, 217),
+                        borderRadius: BorderRadius.circular(6),
+                        color: Color.fromARGB(255, 241, 244, 250),
                       ),
                       child: Image.asset(
                         "assets/images/logoTN2.png",
